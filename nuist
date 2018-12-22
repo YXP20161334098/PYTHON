@@ -1,0 +1,76 @@
+
+#!/usr/bin/python
+
+#coding: utf-8
+
+ 
+
+import httplib2
+
+import sys
+
+ 
+
+def subscan(subpath):
+
+    for fileLine in fileList:
+
+        newline=fileLine.strip()  #去掉每行头尾空白
+
+        path=subpath+newline
+
+        response,content=http.request(path,"GET")
+
+        if response.status!=nonpathstatus and response.status!=nonpathextstatus:
+
+            st=str(response.status)
+
+            print(st+" : "+path)
+
+if __name__=="__main__":
+
+    if(len(sys.argv)<3):
+
+        print "written by lanz...."
+
+        print "usage: "+sys.argv[0]+" host "+" wordlist"+" ext"
+
+        sys.exit(0)
+
+    host=sys.argv[1]
+
+    filename=sys.argv[2]
+
+    ext=sys.argv[3]
+
+    print host
+
+ 
+
+    http=httplib2.Http(".cache")
+
+    response,content=http.request(host)
+
+    response,content=http.request(host+"/mustnotexistpath/")
+
+    nonpathstatus=response.status
+
+ 
+
+    response,content=http.request(host+"/mustnotexitspath/"+ext)
+
+    nonpathextstatus=response.status
+
+    print "NoneExistPathStatus",nonpathstatus
+
+    print "NoneExistFilestatus",nonpathextstatus
+
+ 
+
+    f=open(filename,'r')
+
+    fileList=f.readlines()
+
+    subscan(host)
+
+    f.close()
